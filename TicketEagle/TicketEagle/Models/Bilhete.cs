@@ -10,17 +10,18 @@ namespace TicketEagle.Models
     public class Bilhete
     {
         [Key]
-        public int ID { get; set; }
+        public int TicketID { get; set; }
 
-        public string NomeEvento { get; set; }
+        public string email { get; set; }
 
         public string Descrição { get; set; }
 
-        [ForeignKey("Local")]
-        public int LocalFK { get; set; }
-
-        public string Data { get; set; }
+        public DateTime DataCompra{ get; set; }
 
 
+        //FK para o utiizador
+        [ForeignKey(nameof(UserID))]
+        public int IDFK { get; set; }
+        public virtual Utilizador UserID { get; set; }
     }
 }
