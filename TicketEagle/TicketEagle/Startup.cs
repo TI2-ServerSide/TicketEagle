@@ -28,6 +28,7 @@ namespace TicketEagle
             {
 
                 services.AddControllersWithViews();
+                services.AddRazorPages();
 
                 //****************************************************************************
                 // especificação do 'tipo' e 'localização' da BDcccccccccccccc
@@ -56,7 +57,7 @@ namespace TicketEagle
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -64,6 +65,7 @@ namespace TicketEagle
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

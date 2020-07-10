@@ -9,10 +9,12 @@ namespace TicketEagle.Data
 {
     public class TicketEagleContext : DbContext
     {
+        
         public TicketEagleContext (DbContextOptions<TicketEagleContext> options)
             : base(options)
         {
         }
+        
 
         public DbSet<TicketEagle.Models.Bilhete> Bilhete { get; set; }
 

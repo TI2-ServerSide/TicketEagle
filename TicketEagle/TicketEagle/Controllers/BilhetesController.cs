@@ -57,7 +57,7 @@ namespace TicketEagle.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TicketID,email,Descrição,DataCompra,IDFK")] Bilhete bilhete)
+        public async Task<IActionResult> Create([Bind("TicketID,email,Descrição,DataCompra,IDFK,Preco")] Bilhete bilhete)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace TicketEagle.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TicketID,email,Descrição,DataCompra,IDFK")] Bilhete bilhete)
+        public async Task<IActionResult> Edit(int id, [Bind("TicketID,email,Descrição,DataCompra,IDFK,Preco")] Bilhete bilhete)
         {
             if (id != bilhete.TicketID)
             {
