@@ -11,5 +11,6 @@ namespace TicketEagle.Areas.Identity.Data
     {
         [PersonalData]
         public string Nome { get; set; }
+
     }
 }

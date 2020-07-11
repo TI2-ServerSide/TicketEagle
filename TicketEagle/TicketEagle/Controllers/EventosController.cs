@@ -12,9 +12,9 @@ namespace TicketEagle.Controllers
 {
     public class EventosController : Controller
     {
-        private readonly TicketEagleContext _context;
+        private readonly TEDbContext _context;
 
-        public EventosController(TicketEagleContext context)
+        public EventosController(TEDbContext context)
         {
             _context = context;
         }

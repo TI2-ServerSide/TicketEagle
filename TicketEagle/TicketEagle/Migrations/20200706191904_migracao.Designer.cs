@@ -9,7 +9,7 @@ using TicketEagle.Data;
 
 namespace TicketEagle.Migrations
 {
-    [DbContext(typeof(TicketEagleContext))]
+    [DbContext(typeof(TEDbContext))]
     [Migration("20200706191904_migracao")]
     partial class migracao
     {

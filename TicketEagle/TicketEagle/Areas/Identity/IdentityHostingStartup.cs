@@ -20,7 +20,8 @@ namespace TicketEagle.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("TEDbContextConnection")));
 
-                services.AddDefaultIdentity<TicketEagleUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<TicketEagleUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<TEDbContext>();
             });
         }

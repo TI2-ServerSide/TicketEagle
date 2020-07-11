@@ -17,10 +17,12 @@ namespace TicketEagle.Models
         [Key]
         public int UserID { get; set; }
 
+        
         public string Nome { get; set; }
 
+        [EmailAddress]
         public string Email { get; set; }
-
+        
         public string Password { get; set; }
 
         public string Foto { get; set; }

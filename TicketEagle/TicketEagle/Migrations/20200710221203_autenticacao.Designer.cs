@@ -10,8 +10,8 @@ using TicketEagle.Data;
 namespace TicketEagle.Migrations
 {
     [DbContext(typeof(TEDbContext))]
-    [Migration("20200708113920_segunda")]
-    partial class segunda
+    [Migration("20200710221203_autenticacao")]
+    partial class autenticacao
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

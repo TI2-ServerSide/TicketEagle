@@ -12,7 +12,7 @@ namespace TicketEagle.Models
         [Key]
         public int TicketID { get; set; }
 
-        [RegularExpression("[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]",ErrorMessage = "Deve Inserir um email valido")]
+       // [RegularExpression("[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]",ErrorMessage = "Deve Inserir um email valido")]
         public string email { get; set; }
 
         public string Descrição { get; set; }

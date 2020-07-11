@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,13 +13,14 @@ namespace TicketEagle.Controllers
 {
     public class PromotoresController : Controller
     {
-        private readonly TicketEagleContext _context;
+        private readonly TEDbContext _context;
 
-        public PromotoresController(TicketEagleContext context)
+        public PromotoresController(TEDbContext context)
         {
             _context = context;
         }
 
+        [Authorize(Roles="Promotor")]
         // GET: Promotores
         public async Task<IActionResult> Index()
         {

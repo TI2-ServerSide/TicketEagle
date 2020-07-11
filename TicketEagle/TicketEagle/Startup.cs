@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using TicketEagle.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace TicketEagle
 {
@@ -25,19 +26,20 @@ namespace TicketEagle
         // This method gets called by the runtime. Use this method to add services to the container.
         
             public void ConfigureServices(IServiceCollection services)
-            {
-
-                services.AddControllersWithViews();
-                services.AddRazorPages();
-
+        { 
                 //****************************************************************************
                 // especificação do 'tipo' e 'localização' da BDcccccccccccccc
-                services.AddDbContext<TicketEagleContext>(options =>
+                services.AddDbContext<TEDbContext>(options =>
                    options.UseSqlServer(
                        Configuration.GetConnectionString("ConnectionDB")));
-                //****************************************************************************
+            //****************************************************************************
+            //services.AddDefaultIdentity<TicketEagle.Areas.Identity.Data.TicketEagleUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddRoles<IdentityRole>()
+            //   .AddEntityFrameworkStores<TEDbContext>();
 
-            }
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+        }
         
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
