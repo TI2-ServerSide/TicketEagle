@@ -18,9 +18,9 @@ namespace TicketEagle.Models
 
         [Key]
         [Column(Order = 1)]
-        [ForeignKey(nameof(EventoID))]
+        [ForeignKey(nameof(EvId))]
         public int EventoFK { get; set; }
 
-        public virtual Evento EventoID { get; set; }
+        public virtual Evento EvId { get; set; }
     }
 }

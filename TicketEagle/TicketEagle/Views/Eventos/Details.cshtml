@@ -2,35 +2,56 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Detalhes</h1>
 
 <div>
     <h4>Evento</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Data)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Data)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketID.TicketID)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Local)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Local.ID)
         </dd>
     </dl>
 </div>
+
+@if (@Model.Bilhete.Count() == 0)
+{
+    <h4>Lista de consultas associadas ao/à @Model.Local em @Model.Data </h4>
+}
+else
+{
+
+    <table class="table">
+        <tr>
+            <th>Descrição</th>
+            <th>Preço</th>
+        </tr>
+        @foreach (var bilhete in Model.Bilhete)
+        { // listar todos os bilhetes deste utilizador
+    <tr>
+        <td>@bilhete.Descrição</td>
+        <td>@bilhete.Preco</td>
+        <td>
+            <span asp-validation-for="@bilhete.UserID" class="text-danger"></span>
+            <input type="submit" value="Comprar" class="btn btn-primary" />
+        </td>
+    </tr>
+        }
+    </table>
+} 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.EventoID">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.EvId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

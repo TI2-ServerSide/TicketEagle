@@ -2,70 +2,65 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Lista de Bilhetes</h1>
-
+<h1>Index</h1>
 
 <p>
-    <a class="btn btn-info form-control" asp-action="Create">Criar um Bilhete</a>
+    <a asp-action="Create">Create New</a>
 </p>
-@if (Model.Count() > 0)
-{
-    <table class="table">
-
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Descrição)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DataCompra)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Preco)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Descrição)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DataCompra)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserID.UserID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Preco)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.TicketID" class="btn btn-success">Editar</a>
-                        <a asp-action="Details" asp-route-id="@item.TicketID" class="btn btn-secondary">Detalhes</a>
-                        <a asp-action="Delete" asp-route-id="@item.TicketID" class="btn btn-danger">Apagar</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descrição)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataCompra)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EvId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Preco)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserID)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descrição)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataCompra)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EvId.EvId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Preco)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserID.UserID)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TicketID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TicketID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TicketID">Delete</a>
+            </td>
+        </tr>
 }
-else
-{
-    <kbd>Não há bilhetes disponiveis</kbd>
-}
+    </tbody>
+</table>

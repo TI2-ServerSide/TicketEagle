@@ -22,7 +22,7 @@ namespace TicketEagle.Controllers
         // GET: Bilhetes
         public async Task<IActionResult> Index()
         {
-            var ticketEagleContext = _context.Bilhete.Include(b => b.UserID);
+            var ticketEagleContext = _context.Bilhete.Include(b => b.EvId).Include(b => b.UserID);
             return View(await ticketEagleContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace TicketEagle.Controllers
             }
 
             var bilhete = await _context.Bilhete
+                .Include(b => b.EvId)
                 .Include(b => b.UserID)
                 .FirstOrDefaultAsync(m => m.TicketID == id);
             if (bilhete == null)
@@ -48,6 +49,7 @@ namespace TicketEagle.Controllers
         // GET: Bilhetes/Create
         public IActionResult Create()
         {
+            ViewData["EventoFK2"] = new SelectList(_context.Set<Evento>(), "EvId", "EvId");
             ViewData["IDFK"] = new SelectList(_context.Set<Utilizador>(), "UserID", "UserID");
             return View();
         }
@@ -57,14 +59,16 @@ namespace TicketEagle.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TicketID,email,Descrição,DataCompra,IDFK,Preco")] Bilhete bilhete)
+        public async Task<IActionResult> Create([Bind("TicketID,email,Descrição,DataCompra,EventoFK2,Preco,IDFK")] Bilhete bilhete)
         {
             if (ModelState.IsValid)
             {
+                bilhete.DataCompra = DateTime.Now;
                 _context.Add(bilhete);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["EventoFK2"] = new SelectList(_context.Set<Evento>(), "EvId", "EvId", bilhete.EventoFK2);
             ViewData["IDFK"] = new SelectList(_context.Set<Utilizador>(), "UserID", "UserID", bilhete.IDFK);
             return View(bilhete);
         }
@@ -82,6 +86,7 @@ namespace TicketEagle.Controllers
             {
                 return NotFound();
             }
+            ViewData["EventoFK2"] = new SelectList(_context.Set<Evento>(), "EvId", "EvId", bilhete.EventoFK2);
             ViewData["IDFK"] = new SelectList(_context.Set<Utilizador>(), "UserID", "UserID", bilhete.IDFK);
             return View(bilhete);
         }
@@ -91,7 +96,7 @@ namespace TicketEagle.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TicketID,email,Descrição,DataCompra,IDFK,Preco")] Bilhete bilhete)
+        public async Task<IActionResult> Edit(int id, [Bind("TicketID,email,Descrição,DataCompra,EventoFK2,Preco,IDFK")] Bilhete bilhete)
         {
             if (id != bilhete.TicketID)
             {
@@ -118,6 +123,7 @@ namespace TicketEagle.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["EventoFK2"] = new SelectList(_context.Set<Evento>(), "EvId", "EvId", bilhete.EventoFK2);
             ViewData["IDFK"] = new SelectList(_context.Set<Utilizador>(), "UserID", "UserID", bilhete.IDFK);
             return View(bilhete);
         }
@@ -131,8 +137,11 @@ namespace TicketEagle.Controllers
             }
 
             var bilhete = await _context.Bilhete
+                .Include(b => b.EvId)
                 .Include(b => b.UserID)
                 .FirstOrDefaultAsync(m => m.TicketID == id);
+
+
             if (bilhete == null)
             {
                 return NotFound();

@@ -9,21 +9,21 @@ namespace TicketEagle.Models
 {
     public class Evento
     {
+        public Evento()
+        {
+            Bilhete = new HashSet<Bilhete>();
+        }
+
         [Key]
-        public int EventoID { get; set; }
+        public int EvId { get; set; }
 
         public DateTime Data { get; set; }
-
-        //FK para o bilhete
-        [ForeignKey(nameof(TicketID))]
-        public int TicketFK { get; set; }
-        public virtual Bilhete TicketID { get; set; }
-
 
         //FK para o local
         [ForeignKey(nameof(Local))]
         public int LocalFK { get; set; }
         public virtual Local Local { get; set; }
 
+        public virtual ICollection<Bilhete> Bilhete { get; set; }
     }
 }

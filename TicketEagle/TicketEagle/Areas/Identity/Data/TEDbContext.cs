@@ -24,16 +24,18 @@ namespace TicketEagle.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
     
-    public DbSet<TicketEagle.Models.Bilhete> Bilhete { get; set; }
+   public DbSet<TicketEagle.Models.Bilhete> Bilhete { get; set; }
 
-    public DbSet<TicketEagle.Models.Evento> Evento { get; set; }
+   public DbSet<TicketEagle.Models.Evento> Evento { get; set; }
 
     public DbSet<TicketEagle.Models.Utilizador> Utilizador { get; set; }
 
     public DbSet<TicketEagle.Models.Promotor> Promotor { get; set; }
 
     public DbSet<TicketEagle.Models.Local> Local { get; set; }
-}
+
+    //public DbSet<TicketEagle.Models.UtilizadorBilhete> BilheteUtilizador { get; set; }
+    }
     }
 
     

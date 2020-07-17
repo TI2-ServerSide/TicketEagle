@@ -22,7 +22,7 @@ namespace TicketEagle.Controllers
         // GET: Eventos
         public async Task<IActionResult> Index()
         {
-            var ticketEagleContext = _context.Evento.Include(e => e.Local).Include(e => e.TicketID);
+            var ticketEagleContext = _context.Evento.Include(e => e.Local);
             return View(await ticketEagleContext.ToListAsync());
         }
 
@@ -36,8 +36,10 @@ namespace TicketEagle.Controllers
 
             var evento = await _context.Evento
                 .Include(e => e.Local)
-                .Include(e => e.TicketID)
-                .FirstOrDefaultAsync(m => m.EventoID == id);
+                .Include(m=>m.Bilhete)
+                .Where(m => m.EvId == id)
+                .FirstOrDefaultAsync();
+
             if (evento == null)
             {
                 return NotFound();
@@ -50,7 +52,6 @@ namespace TicketEagle.Controllers
         public IActionResult Create()
         {
             ViewData["LocalFK"] = new SelectList(_context.Set<Local>(), "ID", "ID");
-            ViewData["TicketFK"] = new SelectList(_context.Bilhete, "TicketID", "TicketID");
             return View();
         }
 
@@ -59,7 +60,7 @@ namespace TicketEagle.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EventoID,Data,TicketFK,LocalFK")] Evento evento)
+        public async Task<IActionResult> Create([Bind("EvId,Data,LocalFK")] Evento evento)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +69,6 @@ namespace TicketEagle.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["LocalFK"] = new SelectList(_context.Set<Local>(), "ID", "ID", evento.LocalFK);
-            ViewData["TicketFK"] = new SelectList(_context.Bilhete, "TicketID", "TicketID", evento.TicketFK);
             return View(evento);
         }
 
@@ -86,7 +86,6 @@ namespace TicketEagle.Controllers
                 return NotFound();
             }
             ViewData["LocalFK"] = new SelectList(_context.Set<Local>(), "ID", "ID", evento.LocalFK);
-            ViewData["TicketFK"] = new SelectList(_context.Bilhete, "TicketID", "TicketID", evento.TicketFK);
             return View(evento);
         }
 
@@ -95,9 +94,9 @@ namespace TicketEagle.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EventoID,Data,TicketFK,LocalFK")] Evento evento)
+        public async Task<IActionResult> Edit(int id, [Bind("EvId,Data,LocalFK")] Evento evento)
         {
-            if (id != evento.EventoID)
+            if (id != evento.EvId)
             {
                 return NotFound();
             }
@@ -111,7 +110,7 @@ namespace TicketEagle.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EventoExists(evento.EventoID))
+                    if (!EventoExists(evento.EvId))
                     {
                         return NotFound();
                     }
@@ -123,7 +122,6 @@ namespace TicketEagle.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["LocalFK"] = new SelectList(_context.Set<Local>(), "ID", "ID", evento.LocalFK);
-            ViewData["TicketFK"] = new SelectList(_context.Bilhete, "TicketID", "TicketID", evento.TicketFK);
             return View(evento);
         }
 
@@ -137,8 +135,7 @@ namespace TicketEagle.Controllers
 
             var evento = await _context.Evento
                 .Include(e => e.Local)
-                .Include(e => e.TicketID)
-                .FirstOrDefaultAsync(m => m.EventoID == id);
+                .FirstOrDefaultAsync(m => m.EvId == id);
             if (evento == null)
             {
                 return NotFound();
@@ -160,7 +157,7 @@ namespace TicketEagle.Controllers
 
         private bool EventoExists(int id)
         {
-            return _context.Evento.Any(e => e.EventoID == id);
+            return _context.Evento.Any(e => e.EvId == id);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace TicketEagle.Controllers
             _context = context;
         }
 
-        [Authorize(Roles="Utilizador")]
+       // [Authorize(Roles="Utilizador")]
         // GET: Utilizadores
         public async Task<IActionResult> Index()
         {
@@ -34,9 +34,12 @@ namespace TicketEagle.Controllers
             {
                 return NotFound();
             }
-
+            //Eager loading
             var utilizador = await _context.Utilizador
-                .FirstOrDefaultAsync(m => m.UserID == id);
+                .Include(m=>m.Bilhete)
+                .Where(m => m.UserID == id)
+                .FirstOrDefaultAsync();
+                
             if (utilizador == null)
             {
                 return NotFound();

@@ -11,7 +11,7 @@ namespace TicketEagle.Models
     {
         public Utilizador()
         {
-            ListaBilhetes = new HashSet<Bilhete>();
+            Bilhete = new HashSet<Bilhete>();
         }
 
         [Key]
@@ -27,7 +27,7 @@ namespace TicketEagle.Models
 
         public string Foto { get; set; }
 
-        public virtual ICollection<Bilhete> ListaBilhetes { get; set; }
+        public virtual ICollection<Bilhete> Bilhete { get; set; }
       
     }
 

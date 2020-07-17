@@ -26,12 +26,13 @@ namespace TicketEagle
         // This method gets called by the runtime. Use this method to add services to the container.
         
             public void ConfigureServices(IServiceCollection services)
-        { 
-                //****************************************************************************
-                // especificação do 'tipo' e 'localização' da BDcccccccccccccc
-                services.AddDbContext<TEDbContext>(options =>
-                   options.UseSqlServer(
-                       Configuration.GetConnectionString("ConnectionDB")));
+        {
+            //****************************************************************************
+            // especificação do 'tipo' e 'localização' da BDcccccccccccccc
+            services.AddDbContext<TEDbContext>(options =>
+               options.UseSqlServer(
+                   Configuration.GetConnectionString("ConnectionDB")));
+                   // .UseLazyLoadingProxies());  // ativamos a opção do Lazy Loading
             //****************************************************************************
             //services.AddDefaultIdentity<TicketEagle.Areas.Identity.Data.TicketEagleUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddRoles<IdentityRole>()
@@ -39,6 +40,10 @@ namespace TicketEagle
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            
+
+
+
         }
         
 

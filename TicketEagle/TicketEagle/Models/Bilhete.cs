@@ -9,6 +9,7 @@ namespace TicketEagle.Models
 {
     public class Bilhete
     {
+
         [Key]
         public int TicketID { get; set; }
 
@@ -19,12 +20,17 @@ namespace TicketEagle.Models
         
         public DateTime DataCompra{ get; set; }
 
+
+        [ForeignKey(nameof(EvId))]
+        public int EventoFK2 { get; set; }
+        public virtual Evento EvId { get; set; }
+
         [Column(TypeName = "decimal(10,2)")]
         public decimal Preco { get; set; }
 
-        //FK para o utiizador
         [ForeignKey(nameof(UserID))]
         public int IDFK { get; set; }
         public virtual Utilizador UserID { get; set; }
+
     }
 }
