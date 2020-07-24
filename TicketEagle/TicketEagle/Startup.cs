@@ -28,15 +28,15 @@ namespace TicketEagle
             public void ConfigureServices(IServiceCollection services)
         {
             //****************************************************************************
-            // especificação do 'tipo' e 'localização' da BDcccccccccccccc
+            // especificação do 'tipo' e 'localização' da BD
             services.AddDbContext<TEDbContext>(options =>
                options.UseSqlServer(
                    Configuration.GetConnectionString("ConnectionDB")));
-                   // .UseLazyLoadingProxies());  // ativamos a opção do Lazy Loading
+            // .UseLazyLoadingProxies());  // ativamos a opção do Lazy Loading
             //****************************************************************************
-            //services.AddDefaultIdentity<TicketEagle.Areas.Identity.Data.TicketEagleUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddRoles<IdentityRole>()
-            //   .AddEntityFrameworkStores<TEDbContext>();
+            services.AddDefaultIdentity<TicketEagle.Areas.Identity.Data.TicketEagleUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<TEDbContext>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

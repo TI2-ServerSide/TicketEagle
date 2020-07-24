@@ -4,17 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TicketEagle.Data;
 
 namespace TicketEagle.Controllers
 {
     public class RoleController : Controller
     {
-
+        private readonly TEDbContext _context;
         RoleManager<IdentityRole> _roleManager;
 
-        public RoleController(RoleManager<IdentityRole> roleManager)
+        public RoleController(RoleManager<IdentityRole> roleManager, TEDbContext context)
         {
             _roleManager = roleManager;
+            _context = context;
         }
         public IActionResult Index()
         {
