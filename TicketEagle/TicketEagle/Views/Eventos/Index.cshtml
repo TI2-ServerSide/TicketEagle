@@ -35,10 +35,16 @@
                         @Html.DisplayFor(modelItem => item.Local.ID)
                     </td>
                     <td>
+                        @*<a asp-action="Comprar" class="btn btn-info">Comprar</a>*@
+
+                        <form asp-action="Comprar" asp-route-EvId="@item.EvId" asp-route-Local="@item.Local"  onclick="return confirm('Tem a certeza que quer comprar?')">
+                            <input type="submit" value="Comprar" class="btn btn-primary" />
+                        </form>
+
+
                         <a asp-action="Edit" asp-route-id="@item.EvId" class="btn btn-success">Editar</a>
                         <a asp-action="Details" asp-route-id="@item.EvId" class="btn btn-secondary">Detalhes</a>
                         <a asp-action="Delete" asp-route-id="@item.EvId" class="btn btn-danger">Apagar</a>
-
                     </td>
                 </tr>
             }

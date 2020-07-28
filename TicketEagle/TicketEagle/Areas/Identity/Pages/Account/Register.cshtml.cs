@@ -91,9 +91,18 @@ namespace TicketEagle.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             var role = _roleManager.FindByIdAsync(Input.Name).Result;
+
+            
+            //numero esquisito é o id do role Utilizador
+            if (Input.Name.Equals("16f560d8-e89e-47df-8146-faffa71e4cd7"))
+            {
+                var user2 = new Models.Utilizador { Nome = Input.Email, Email = Input.Email };
+                _context.Add(user2);
+            }
+
             if (ModelState.IsValid)
             { 
-        var user = new TicketEagleUser { UserName = Input.Email, Email = Input.Email };
+        var user = new TicketEagleUser { UserName = Input.Email, Email = Input.Email, Nome=Input.Name };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -126,6 +135,7 @@ namespace TicketEagle.Areas.Identity.Pages.Account
                 }
                 foreach (var error in result.Errors)
                 {
+                    ViewData["roles"] = new SelectList(_context.Roles, "Id", "Name");
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }

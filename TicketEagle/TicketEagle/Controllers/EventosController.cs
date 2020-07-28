@@ -155,6 +155,47 @@ namespace TicketEagle.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
+        // GET: Bilhetes/Create
+        public IActionResult Comprar()
+        {
+            ViewData["EventoFK2"] = new SelectList(_context.Set<Evento>(), "EvId", "EvId");
+            ViewData["IDFK"] = new SelectList(_context.Set<Utilizador>(), "UserID", "UserID");
+            return View();
+        }
+
+        // POST: Bilhetes/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Comprar(int? id,Bilhete bilhete,[Bind("EvId,Local")]Evento evento)
+        {
+
+
+            if (ModelState.IsValid)
+            {
+                //encontrar o ID Utilizador do user autenticado
+                bilhete.IDFK = _context.Utilizador.Where(b => b.Nome == User.Identity.Name).Select(b => b.UserID).FirstOrDefault();
+                bilhete.email = User.Identity.Name;
+                bilhete.DataCompra = DateTime.Now;
+                var a = evento.Local;
+                var b = evento.Data.ToString();
+                bilhete.Descrição = a + b;
+                bilhete.EventoFK2 = evento.EvId;
+                _context.Add(bilhete);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["EventoFK2"] = new SelectList(_context.Set<Evento>(), "EvId", "EvId", bilhete.EventoFK2);
+            ViewData["IDFK"] = new SelectList(_context.Set<Utilizador>(), "UserID", "UserID", bilhete.IDFK);
+            //return View(bilhete);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
         private bool EventoExists(int id)
         {
             return _context.Evento.Any(e => e.EvId == id);

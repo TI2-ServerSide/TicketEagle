@@ -32,7 +32,6 @@
 }
 else
 {
-<form asp-action="Bilhete/Edit">
     <table class="table">
         <tr>
             <th>Descrição</th>
@@ -44,15 +43,12 @@ else
                 <td>@bilhete.Descrição</td>
                 <td>@bilhete.Preco</td>
                 <td>
-                    <input type="hidden" asp-for="@bilhete.UserID" />
-                    <span asp-validation-for="@bilhete.UserID" class="text-danger"></span>
-                    <select asp-for="@bilhete.UserID" class="form-control" asp-items="ViewBag."></select>
-                    <input type="submit" value="Comprar" class="btn btn-primary" />
+                    @*criar bilhete quando carrega no butao *@
+                    <a asp-controller="Bilhetes" asp-action="Details" asp-route-id="@bilhete.TicketID">Comprar</a>
                 </td>
             </tr>
         }
     </table>
-</form>
         }
         <div>
             <a asp-action="Edit" asp-route-id="@Model.EvId">Edit</a> |

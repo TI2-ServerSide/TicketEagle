@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TicketEagle.Data;
 using TicketEagle.Models;
+using Microsoft.AspNetCore.Identity;
+using TicketEagle.Areas.Identity.Data;
 
 namespace TicketEagle.Controllers
 {
     public class BilhetesController : Controller
     {
         private readonly TEDbContext _context;
+        private readonly UserManager<TicketEagleUser> _userManager;
 
-        public BilhetesController(TEDbContext context)
+        public BilhetesController(TEDbContext context,UserManager<TicketEagleUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Bilhetes
@@ -63,6 +67,9 @@ namespace TicketEagle.Controllers
         {
             if (ModelState.IsValid)
             {
+                //encontrar o ID Utilizador do user autenticado
+                bilhete.IDFK = _context.Utilizador.Where(b => b.Nome == User.Identity.Name).Select(b =>b.UserID).FirstOrDefault();
+                bilhete.email = User.Identity.Name;
                 bilhete.DataCompra = DateTime.Now;
                 _context.Add(bilhete);
                 await _context.SaveChangesAsync();
