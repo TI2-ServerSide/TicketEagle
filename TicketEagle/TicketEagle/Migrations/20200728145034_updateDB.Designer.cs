@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketEagle.Data;
 
 namespace TicketEagle.Migrations
 {
     [DbContext(typeof(TEDbContext))]
-    partial class TEDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200728145034_updateDB")]
+    partial class updateDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,9 +271,6 @@ namespace TicketEagle.Migrations
                     b.Property<int>("LocalFK")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Preco")
-                        .HasColumnType("decimal(10,2)");
-
                     b.Property<string>("Titulo")
                         .HasColumnType("nvarchar(max)");
 
@@ -313,36 +312,12 @@ namespace TicketEagle.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Foto")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.ToTable("Promotor");
-                });
-
-            modelBuilder.Entity("TicketEagle.Models.PromotorEvento", b =>
-                {
-                    b.Property<int>("PromotorFK")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EventoFK")
-                        .HasColumnType("int");
-
-                    b.HasKey("PromotorFK", "EventoFK");
-
-                    b.HasIndex("EventoFK");
-
-                    b.ToTable("PromotorEvento");
                 });
 
             modelBuilder.Entity("TicketEagle.Models.Utilizador", b =>
@@ -440,21 +415,6 @@ namespace TicketEagle.Migrations
                     b.HasOne("TicketEagle.Models.Local", "Local")
                         .WithMany()
                         .HasForeignKey("LocalFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TicketEagle.Models.PromotorEvento", b =>
-                {
-                    b.HasOne("TicketEagle.Models.Evento", "EvId")
-                        .WithMany("Promotor")
-                        .HasForeignKey("EventoFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TicketEagle.Models.Promotor", "Promotor")
-                        .WithMany("Evento")
-                        .HasForeignKey("PromotorFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

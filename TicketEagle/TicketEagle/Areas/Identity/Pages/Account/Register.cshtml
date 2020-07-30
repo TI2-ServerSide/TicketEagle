@@ -34,7 +34,12 @@
                 <select asp-for="Input.Name" class="form-control" asp-items='ViewBag.roles'></select>
                 <span asp-validation-for="Input.Name" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <div class="form-group">
+                <label asp-for="Input.Foto"></label>
+                <input type="file" name="fotoUser" accept=".jpg,.png" style="color:blue;" />
+                <span asp-validation-for="Input.Foto" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Registar</button>
         </form>
     </div>
     <div class="col-md-6 col-md-offset-2">

@@ -20,7 +20,7 @@ namespace TicketEagle.Controllers
             _context = context;
         }
 
-        [Authorize(Roles="Promotor")]
+        //[Authorize(Roles="Promotor, Admin")]
         // GET: Promotores
         public async Task<IActionResult> Index()
         {
@@ -56,7 +56,7 @@ namespace TicketEagle.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Nome")] Promotor promotor)
+        public async Task<IActionResult> Create([Bind("ID,Nome,Email,Password,Foto")] Promotor promotor)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace TicketEagle.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Nome")] Promotor promotor)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Nome,Email,Password,Foto")] Promotor promotor)
         {
             if (id != promotor.ID)
             {

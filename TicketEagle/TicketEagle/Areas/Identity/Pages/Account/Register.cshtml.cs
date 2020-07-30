@@ -74,9 +74,11 @@ namespace TicketEagle.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
+            [Display(Name="Tipo de Utilizador")]
             public string Name { get; set; }
 
-
+            [Display(Name="Fotografia")]
+            public string Foto { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -91,18 +93,30 @@ namespace TicketEagle.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             var role = _roleManager.FindByIdAsync(Input.Name).Result;
-
             
-            //numero esquisito é o id do role Utilizador
-            if (Input.Name.Equals("16f560d8-e89e-47df-8146-faffa71e4cd7"))
+            
+            //criar um novo usuario na tabela respetiva dependendo do role
+            if (role.Name.Equals("Utilizador"))
             {
-                var user2 = new Models.Utilizador { Nome = Input.Email, Email = Input.Email };
+                var user2 = new Models.Utilizador { Nome = Input.Email, Email = Input.Email,Foto=Input.Foto,Password=Input.Password };
                 _context.Add(user2);
+            }else if (role.Name.Equals("Promotor"))
+            {
+                var user = new Models.Promotor { Nome = Input.Email };
+                _context.Add(user);
+            }else if(role.Name.Equals("Admin") && Input.Email.Contains("@t_eagle.com"))
+            {
+                //se pode ser admin se for do dominio da empresa (email confirmado)
+                //se for admin precisa de ter dados utilizador e promotor
+                var u= new Models.Utilizador { Nome = Input.Email, Email = Input.Email, Foto = Input.Foto, Password = Input.Password };
+                var u2= new Models.Promotor { Nome = Input.Email };
+                _context.Add(u);
+                _context.Add(u2);
             }
 
             if (ModelState.IsValid)
             { 
-        var user = new TicketEagleUser { UserName = Input.Email, Email = Input.Email, Nome=Input.Name };
+                var user = new TicketEagleUser { UserName = Input.Email, Email = Input.Email, Nome=Input.Name };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

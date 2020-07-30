@@ -21,12 +21,19 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Local)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Titulo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Promotor)
+                </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
+                @if (item.Data.CompareTo(DateTime.Now)>0) { 
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Data)
@@ -35,10 +42,28 @@
                         @Html.DisplayFor(modelItem => item.Local.ID)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.Titulo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Promotor)
+                    </td>
+                    <td>
                         @*<a asp-action="Comprar" class="btn btn-info">Comprar</a>*@
 
-                        <form asp-action="Comprar" asp-route-EvId="@item.EvId" asp-route-Local="@item.Local"  onclick="return confirm('Tem a certeza que quer comprar?')">
-                            <input type="submit" value="Comprar" class="btn btn-primary" />
+                        <form asp-action="Comprar" asp-route-EvId="@item.EvId">
+                            @if (item.Preco == 0)
+                            {
+                                <select name="pr" asp-for="@item.Preco">
+                                    <option value="60">20€</option>
+                                    <option value="80">40€</option>
+                                    <option value="90">80€</option>
+                                </select>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.Preco)
+                            }
+                            <div><input type="submit" value="Comprar" class="btn btn-primary" onclick="if(confirm('Tem a certeza que quer comprar?')) { alert('Compra Efetuada') }" /></div>
                         </form>
 
 
@@ -47,6 +72,7 @@
                         <a asp-action="Delete" asp-route-id="@item.EvId" class="btn btn-danger">Apagar</a>
                     </td>
                 </tr>
+                }
             }
         </tbody>
     </table>

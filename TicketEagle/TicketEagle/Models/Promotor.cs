@@ -8,10 +8,24 @@ namespace TicketEagle.Models
 {
     public class Promotor
     {
+        public Promotor()
+        {
+            Evento = new HashSet<PromotorEvento>();
+        }
+
         [Key]
         public int ID { get; set; }
 
         public string Nome { get; set; }
+
+        [EmailAddress]
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+        public string Foto{get; set; }
+
+        public virtual ICollection<PromotorEvento> Evento { get; set; }
 
     }
 }

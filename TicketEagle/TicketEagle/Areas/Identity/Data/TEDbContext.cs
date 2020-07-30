@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TicketEagle.Areas.Identity.Data;
+using TicketEagle.Models;
 
 namespace TicketEagle.Data
 {
@@ -19,6 +20,8 @@ namespace TicketEagle.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<PromotorEvento>()
+            .HasKey(e => new { e.PromotorFK, e.EventoFK });
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
@@ -34,7 +37,6 @@ namespace TicketEagle.Data
 
     public DbSet<TicketEagle.Models.Local> Local { get; set; }
 
-    //public DbSet<TicketEagle.Models.UtilizadorBilhete> BilheteUtilizador { get; set; }
     }
     }
 
