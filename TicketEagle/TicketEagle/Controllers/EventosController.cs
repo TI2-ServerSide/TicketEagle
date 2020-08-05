@@ -193,6 +193,9 @@ namespace TicketEagle.Controllers
                 //var ev = _context.Evento.Where(e => e.EvId == evento.EvId).Select(b=>b.Preco).FirstOrDefault();
                 var ev = await _context.Evento.FindAsync(evento.EvId);
 
+                //encontrar nome do local
+                var loc = _context.Local.Where(b => b.ID == evento.LocalFK).Select(b => b.NomeLocal).FirstOrDefault();
+
                 //encontrar o ID Utilizador do user autenticado
                 bilhete.IDFK = _context.Utilizador.Where(b => b.Nome == User.Identity.Name).Select(b => b.UserID).FirstOrDefault();
                 bilhete.email = User.Identity.Name;
@@ -208,7 +211,7 @@ namespace TicketEagle.Controllers
                     bilhete.Preco = ev.Preco;
                 }
                
-                bilhete.Descrição = string.Concat(ev.Local,ev.Titulo);
+                bilhete.Descrição = string.Concat(loc,ev.Titulo);
                 bilhete.EventoFK2 = evento.EvId;
                 _context.Add(bilhete);
                 await _context.SaveChangesAsync();

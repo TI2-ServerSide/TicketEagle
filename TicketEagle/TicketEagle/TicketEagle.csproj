@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="wwwroot\assets\js\main.js" />
     <None Include="wwwroot\assets\vendor\aos\aos.js" />
     <None Include="wwwroot\assets\vendor\bootstrap\css\bootstrap-grid.css.map" />

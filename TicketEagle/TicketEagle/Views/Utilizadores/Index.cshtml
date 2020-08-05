@@ -45,7 +45,7 @@
                     @Html.DisplayFor(modelItem => item.Password)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Foto)
+                    <img src="~/Imagens/Users/@item.Foto" height="50" alt="imagem do utilizador @item.Nome" title="@item.Nome" />
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.UserID" class="btn btn-success">Editar</a> 
