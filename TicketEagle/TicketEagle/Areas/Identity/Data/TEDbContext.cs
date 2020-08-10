@@ -37,6 +37,8 @@ namespace TicketEagle.Data
 
     public DbSet<TicketEagle.Models.Local> Local { get; set; }
 
+    public DbSet<TicketEagle.Models.PromotorEvento> PromotorEvento { get; set; }
+
     }
     }
 

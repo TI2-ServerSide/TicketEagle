@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -69,6 +70,10 @@ namespace TicketEagle.Controllers
         {
             if (ModelState.IsValid)
             {
+                var i = _context.Promotor.Where(b => b.Nome == User.Identity.Name).Select(b=>b.Evento).FirstOrDefault();
+               // var ni = _context.PromotorEvento.Where(b => b.EvId == i).Select(b => b.Promotor);
+                //var ni2 = _context.Evento.Where(b => b.EvId == ni);
+               // evento.Promotor = ni;
                 _context.Add(evento);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -85,6 +90,18 @@ namespace TicketEagle.Controllers
             if (id == null)
             {
                 return NotFound();
+            }
+
+            //var u= _context.Utilizador.Where(b => b.Nome == User.Identity.Name).Select(b => b.UserID).FirstOrDefault();
+
+            //descobrir promotor do evento
+            var i = _context.Evento.Where(b => b.EvId == id).Select(b =>b.Promotor).FirstOrDefault();
+            var n = _context.PromotorEvento.Where(b => b.EvId == i).Select(b=>b.Promotor).FirstOrDefault().ID;
+            var n2 = _context.Promotor.Where(b => b.ID == n).Select(b=>b.Nome).FirstOrDefault();
+
+            if (n2 != User.Identity.Name)
+            {
+                throw new SecurityException("Unauthorized access!");
             }
 
             var evento = await _context.Evento.FindAsync(id);

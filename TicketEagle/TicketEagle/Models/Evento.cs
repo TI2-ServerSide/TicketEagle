@@ -12,7 +12,7 @@ namespace TicketEagle.Models
         public Evento()
         {
             Bilhete = new HashSet<Bilhete>();
-            Promotor = new HashSet<PromotorEvento>();
+            PromotorEvento = new HashSet<PromotorEvento>();
         }
 
         [Key]
@@ -32,6 +32,6 @@ namespace TicketEagle.Models
 
         public virtual ICollection<Bilhete> Bilhete { get; set; }
 
-        public virtual ICollection<PromotorEvento> Promotor { get; set; }
+        public virtual ICollection<PromotorEvento> PromotorEvento { get; set; }
     }
 }
