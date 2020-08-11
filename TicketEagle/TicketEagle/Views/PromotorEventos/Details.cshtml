@@ -1,0 +1,31 @@
+﻿@model TicketEagle.Models.PromotorEvento
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>PromotorEvento</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Promotor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Promotor.ID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EvId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EvId.EvId)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

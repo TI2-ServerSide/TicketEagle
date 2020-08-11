@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,6 @@ using TicketEagle.Models;
 
 namespace TicketEagle.Controllers
 {
-    [Authorize(Roles = "Promotor")]
     public class LocaisController : Controller
     {
         private readonly TEDbContext _context;

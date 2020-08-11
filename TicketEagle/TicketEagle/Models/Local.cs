@@ -20,6 +20,5 @@ namespace TicketEagle.Models
         
         public string Foto { get; set; }
 
-
     }
 }

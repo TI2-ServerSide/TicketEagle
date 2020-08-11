@@ -31,7 +31,7 @@ namespace TicketEagle
             // especificação do 'tipo' e 'localização' da BD
             services.AddDbContext<TEDbContext>(options =>
                options.UseSqlServer(
-                   Configuration.GetConnectionString("ConnectionDB")));
+                   Configuration.GetConnectionString("TEDbContextConnection")));
             // .UseLazyLoadingProxies());  // ativamos a opção do Lazy Loading
             //****************************************************************************
             services.AddDefaultIdentity<TicketEagle.Areas.Identity.Data.TicketEagleUser>(options => options.SignIn.RequireConfirmedAccount = false)
@@ -40,9 +40,6 @@ namespace TicketEagle
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-            
-
-
 
         }
         

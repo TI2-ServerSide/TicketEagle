@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +12,7 @@ using TicketEagle.Data;
 using TicketEagle.Models;
 
 namespace TicketEagle.Controllers
-{   
+{
     public class EventosController : Controller
     {
         private readonly TEDbContext _context;
@@ -39,10 +39,7 @@ namespace TicketEagle.Controllers
 
             var evento = await _context.Evento
                 .Include(e => e.Local)
-                .Include(m=>m.Bilhete)
-                .Where(m => m.EvId == id)
-                .FirstOrDefaultAsync();
-
+                .FirstOrDefaultAsync(m => m.EvId == id);
             if (evento == null)
             {
                 return NotFound();
@@ -51,66 +48,60 @@ namespace TicketEagle.Controllers
             return View(evento);
         }
 
-        [Authorize(Roles = "Promotor")]
         // GET: Eventos/Create
         public IActionResult Create()
         {
-            ViewData["LocalFK"] = new SelectList(_context.Set<Local>(), "ID", "ID");
-            ViewData["Promotor"] = new SelectList(_context.Set<Promotor>(),"ID","ID");
+            ViewData["LocalFK"] = new SelectList(_context.Local, "ID", "NomeLocal");
+            ViewData["PromotorEvento"] = new SelectList(_context.Set<Promotor>(), "ID", "ID");
             return View();
         }
 
         // POST: Eventos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Promotor")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EvId,Data,LocalFK,Titulo,Preco,Promotor")] Evento evento)
+        public async Task<IActionResult> Create([Bind("EvId,Titulo,Data,Preco,LocalFK")] Evento evento,PromotorEvento prEv)
         {
+            
             if (ModelState.IsValid)
             {
-                var i = _context.Promotor.Where(b => b.Nome == User.Identity.Name).Select(b=>b.Evento).FirstOrDefault();
-               // var ni = _context.PromotorEvento.Where(b => b.EvId == i).Select(b => b.Promotor);
-                //var ni2 = _context.Evento.Where(b => b.EvId == ni);
-               // evento.Promotor = ni;
                 _context.Add(evento);
+                await _context.SaveChangesAsync();
+
+                //relacionar evento ao promotor que o criou
+                prEv.EventoFK = _context.Evento.Where(b => b.Titulo == evento.Titulo).Select(b => b.EvId).FirstOrDefault();
+                prEv.PromotorFK = _context.Promotor.Where(b => b.Nome == User.Identity.Name).Select(b => b.ID).FirstOrDefault();
+                _context.Add(prEv);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LocalFK"] = new SelectList(_context.Set<Local>(), "ID", "ID", evento.LocalFK);
-            ViewData["Promotor"] = new SelectList(_context.Set<Promotor>(), "ID", "ID",evento.Promotor);
+            ViewData["LocalFK"] = new SelectList(_context.Local, "ID", "NomeLocal", evento.LocalFK);
             return View(evento);
         }
 
         // GET: Eventos/Edit/5
-        [Authorize(Roles = "Promotor")]
         public async Task<IActionResult> Edit(int? id)
         {
+           int ip = _context.Promotor.Where(p => p.Nome == User.Identity.Name).Select(p => p.ID).FirstOrDefault();
+           int ip2= _context.PromotorEvento.Where(p => p.EventoFK == id).Select(p => p.PromotorFK).FirstOrDefault();
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            //var u= _context.Utilizador.Where(b => b.Nome == User.Identity.Name).Select(b => b.UserID).FirstOrDefault();
-
-            //descobrir promotor do evento
-            var i = _context.Evento.Where(b => b.EvId == id).Select(b =>b.Promotor).FirstOrDefault();
-            var n = _context.PromotorEvento.Where(b => b.EvId == i).Select(b=>b.Promotor).FirstOrDefault().ID;
-            var n2 = _context.Promotor.Where(b => b.ID == n).Select(b=>b.Nome).FirstOrDefault();
-
-            if (n2 != User.Identity.Name)
+            if (ip != ip2)
             {
-                throw new SecurityException("Unauthorized access!");
+                return StatusCode((int)System.Net.HttpStatusCode.Unauthorized, "Acesso a este Evento Nao Autorizado");
             }
-
+            
             var evento = await _context.Evento.FindAsync(id);
             if (evento == null)
             {
                 return NotFound();
             }
-            ViewData["LocalFK"] = new SelectList(_context.Set<Local>(), "ID", "ID", evento.LocalFK);
-            ViewData["Promotor"] = new SelectList(_context.Set<Promotor>(), "ID", "ID", evento.Promotor);
+            ViewData["LocalFK"] = new SelectList(_context.Local, "ID", "NomeLocal", evento.LocalFK);
             return View(evento);
         }
 
@@ -119,8 +110,7 @@ namespace TicketEagle.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Promotor")]
-        public async Task<IActionResult> Edit(int id, [Bind("EvId,Data,LocalFK,Titulo,Preco,Promotor")] Evento evento)
+        public async Task<IActionResult> Edit(int id, [Bind("EvId,Titulo,Data,Preco,LocalFK")] Evento evento)
         {
             if (id != evento.EvId)
             {
@@ -147,13 +137,11 @@ namespace TicketEagle.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LocalFK"] = new SelectList(_context.Set<Local>(), "ID", "ID", evento.LocalFK);
-            ViewData["Promotor"] = new SelectList(_context.Set<Promotor>(), "ID", "ID", evento.Promotor);
+            ViewData["LocalFK"] = new SelectList(_context.Local, "ID", "ID", evento.LocalFK);
             return View(evento);
         }
 
         // GET: Eventos/Delete/5
-        [Authorize(Roles = "Promotor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -175,7 +163,6 @@ namespace TicketEagle.Controllers
         // POST: Eventos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Promotor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var evento = await _context.Evento.FindAsync(id);
@@ -184,9 +171,6 @@ namespace TicketEagle.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
-        // GET: Bilhetes/Create
         public IActionResult Comprar()
         {
             ViewData["EventoFK2"] = new SelectList(_context.Set<Evento>(), "EvId", "EvId");
@@ -200,9 +184,8 @@ namespace TicketEagle.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Utilizador")]
-        public async Task<IActionResult> Comprar(Bilhete bilhete,[Bind("EvId,Local,Titulo,Preco")]Evento evento)
+        public async Task<IActionResult> Comprar(Bilhete bilhete, [Bind("EvId,Local,Titulo,Preco")]Evento evento)
         {
-
 
             if (ModelState.IsValid)
             {
@@ -217,9 +200,10 @@ namespace TicketEagle.Controllers
                 bilhete.IDFK = _context.Utilizador.Where(b => b.Nome == User.Identity.Name).Select(b => b.UserID).FirstOrDefault();
                 bilhete.email = User.Identity.Name;
                 bilhete.DataCompra = DateTime.Now;
-                
+
                 //recebe preco do evento atraves do nome do select
-                if(ev.Preco == 0) { 
+                if (ev.Preco == 0)
+                {
                     var p = Request.Form["pr"];
                     bilhete.Preco = decimal.Parse(Request.Form["pr"]);
                 }
@@ -227,8 +211,8 @@ namespace TicketEagle.Controllers
                 {
                     bilhete.Preco = ev.Preco;
                 }
-               
-                bilhete.Descrição = string.Concat(loc,ev.Titulo);
+
+                bilhete.Descrição = string.Concat(loc, ev.Titulo);
                 bilhete.EventoFK2 = evento.EvId;
                 _context.Add(bilhete);
                 await _context.SaveChangesAsync();
@@ -236,12 +220,10 @@ namespace TicketEagle.Controllers
             }
             ViewData["EventoFK2"] = new SelectList(_context.Set<Evento>(), "EvId", "EvId", bilhete.EventoFK2);
             ViewData["IDFK"] = new SelectList(_context.Set<Utilizador>(), "UserID", "UserID", bilhete.IDFK);
-           // ViewData["conf"] = "<script>alert('Change succesfully');</script>";
+            // ViewData["conf"] = "<script>alert('Change succesfully');</script>";
             //return View(bilhete);
             return RedirectToAction(nameof(Index));
         }
-
-
 
         private bool EventoExists(int id)
         {

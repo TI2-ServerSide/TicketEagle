@@ -139,17 +139,23 @@ namespace TicketEagle.Areas.Identity.Pages.Account
             if (role.Name.Equals("Utilizador"))
             {
                 var user2 = new Models.Utilizador { Nome = Input.Email, Email = Input.Email,Foto=Input.Foto,Password=Input.Password };
+               /* var nome = _context.Utilizador.Where(p => p.Nome == Input.Email).FirstOrDefault();
+                if(nome != null)
+                {
+
+                }
+                */
                 _context.Add(user2);
             }else if (role.Name.Equals("Promotor"))
             {
-                var user = new Models.Promotor { Nome = Input.Email };
+                var user = new Models.Promotor { Nome = Input.Email, Email = Input.Email, Foto = Input.Foto, Password = Input.Password };
                 _context.Add(user);
             }else if(role.Name.Equals("Admin") && Input.Email.Contains("@t_eagle.com"))
             {
                 //se pode ser admin se for do dominio da empresa (email confirmado)
                 //se for admin precisa de ter dados utilizador e promotor
                 var u= new Models.Utilizador { Nome = Input.Email, Email = Input.Email, Foto = Input.Foto, Password = Input.Password };
-                var u2= new Models.Promotor { Nome = Input.Email };
+                var u2= new Models.Promotor { Nome = Input.Email, Email = Input.Email, Foto = Input.Foto, Password = Input.Password };
                 _context.Add(u);
                 _context.Add(u2);
             }
