@@ -3,7 +3,13 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 <h1>Details</h1>
 
 <div>
@@ -41,7 +47,7 @@
 @if (Model.Bilhete.Count() == 0)
 {
     <h4>Lista de consultas associadas ao/à @Model.Nome </h4>
-    }
+}
 else
 {
 
@@ -52,11 +58,11 @@ else
         </tr>
         @foreach (var bilhete in Model.Bilhete)
         { // listar todos os bilhetes deste utilizador
-    <tr>
-        <td>@bilhete.DataCompra</td>
-        <td>@bilhete.Descrição</td>
-        <td>@bilhete.EvId</td>
-    </tr>
+            <tr>
+                <td>@bilhete.DataCompra</td>
+                <td>@bilhete.Descrição</td>
+                <td>@bilhete.EvId</td>
+            </tr>
         }
     </table>
 }

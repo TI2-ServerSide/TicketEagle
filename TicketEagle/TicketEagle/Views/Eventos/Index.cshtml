@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+    <br /><br /><br /><br /><br /><br /><br />
 
 <h1>Lista de Eventos</h1>
 
@@ -24,9 +25,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Titulo)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PromotorEvento)
-                </th>
+                @*<th>
+            @Html.DisplayNameFor(model => model.PromotorEvento)
+        </th>*@
                 <th></th>
             </tr>
         </thead>
@@ -34,44 +35,45 @@
             @foreach (var item in Model)
             {
                 @if (item.Data.CompareTo(DateTime.Now)>0) { 
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Data)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Local.ID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Titulo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PromotorEvento)
-                    </td>
-                    <td>
-                        @*<a asp-action="Comprar" class="btn btn-info">Comprar</a>*@
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Local.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Titulo)
+                </td>
+                @*
+        <td>
+            @Html.DisplayFor(modelItem => item.PromotorEvento)
+        </td>*@
+                <td>
+                    @*<a asp-action="Comprar" class="btn btn-info">Comprar</a>*@
 
-                        <form asp-action="Comprar" asp-route-EvId="@item.EvId">
-                            @if (item.Preco == 0)
-                            {
-                                <select name="pr" asp-for="@item.Preco">
-                                    <option value="20">20€</option>
-                                    <option value="40">40€</option>
-                                    <option value="80">80€</option>
-                                </select>
-                            }
-                            else
-                            {
-                                @Html.DisplayFor(modelItem => item.Preco)
-                            }
-                            <div><input type="submit" value="Comprar" class="btn btn-primary" onclick="if(confirm('Tem a certeza que quer comprar?')) { alert('Compra Efetuada') }" /></div>
-                        </form>
+                    <form asp-action="Comprar" asp-route-EvId="@item.EvId">
+                        @if (item.Preco == 0)
+                        {
+                            <select name="pr" asp-for="@item.Preco">
+                                <option value="20">20€</option>
+                                <option value="40">40€</option>
+                                <option value="80">80€</option>
+                            </select>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.Preco)
+                        }
+                        <div><input type="submit" value="Comprar" class="btn btn-primary" onclick="if(confirm('Tem a certeza que quer comprar?')) { alert('Compra Efetuada') }" /></div>
+                    </form>
 
 
-                        <a asp-action="Edit" asp-route-id="@item.EvId" class="btn btn-success">Editar</a>
-                        <a asp-action="Details" asp-route-id="@item.EvId" class="btn btn-secondary">Detalhes</a>
-                        <a asp-action="Delete" asp-route-id="@item.EvId" class="btn btn-danger">Apagar</a>
-                    </td>
-                </tr>
+                    <a asp-action="Edit" asp-route-id="@item.EvId" class="btn btn-success">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.EvId" class="btn btn-secondary">Detalhes</a>
+                    <a asp-action="Delete" asp-route-id="@item.EvId" class="btn btn-danger">Apagar</a>
+                </td>
+            </tr>
                 }
             }
         </tbody>
