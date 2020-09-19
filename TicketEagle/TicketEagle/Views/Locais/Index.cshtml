@@ -3,7 +3,13 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 <h1>Lista de Locais</h1>
 
 <p>
@@ -12,54 +18,54 @@
 @if (Model.Count() > 0)
 {
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NomeLocal)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descrição)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacidade)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Foto)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NomeLocal)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descrição)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Capacidade)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Foto)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-success">Editar</a> 
-                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-secondary">Detalhes</a> 
-                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger">Apagar</a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.NomeLocal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descrição)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Capacidade)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Foto)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NomeLocal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descrição)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Capacidade)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Foto)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-success">Editar</a>
+                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-secondary">Detalhes</a>
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger">Apagar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
 
 }
 else
 {
-<kbd>Não há Locais disponiveis</kbd>
+    <kbd>Não há Locais disponiveis</kbd>
 }
 

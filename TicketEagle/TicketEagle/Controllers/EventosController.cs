@@ -49,6 +49,7 @@ namespace TicketEagle.Controllers
         }
 
         // GET: Eventos/Create
+        [Authorize(Roles="Promotor,Admin")]
         public IActionResult Create()
         {
             ViewData["LocalFK"] = new SelectList(_context.Local, "ID", "NomeLocal");
@@ -81,8 +82,10 @@ namespace TicketEagle.Controllers
         }
 
         // GET: Eventos/Edit/5
+        [Authorize(Roles = "Promotor,Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
+            //verificar se o utilizador é o proprio promotor do evento para poder edita-lo
            int ip = _context.Promotor.Where(p => p.Nome == User.Identity.Name).Select(p => p.ID).FirstOrDefault();
            int ip2= _context.PromotorEvento.Where(p => p.EventoFK == id).Select(p => p.PromotorFK).FirstOrDefault();
 
@@ -93,6 +96,7 @@ namespace TicketEagle.Controllers
 
             if (ip != ip2)
             {
+                //nao deixa editar se nao for o proprio promotor
                 return StatusCode((int)System.Net.HttpStatusCode.Unauthorized, "Acesso a este Evento Nao Autorizado");
             }
             
@@ -141,6 +145,7 @@ namespace TicketEagle.Controllers
             return View(evento);
         }
 
+        [Authorize(Roles = "Promotor,Admin")]
         // GET: Eventos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

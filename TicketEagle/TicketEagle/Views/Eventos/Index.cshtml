@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-    <br /><br /><br /><br /><br /><br /><br />
+   <br /><br /><br /><br /><br /><br /><br />
 
 <h1>Lista de Eventos</h1>
 
@@ -65,7 +65,7 @@
                         {
                             @Html.DisplayFor(modelItem => item.Preco)
                         }
-                        <div><input type="submit" value="Comprar" class="btn btn-primary" onclick="if(confirm('Tem a certeza que quer comprar?')) { alert('Compra Efetuada') }" /></div>
+                        <div><input type="submit" value="Comprar" class="btn btn-outline-danger" onclick="if(confirm('Tem a certeza que quer comprar?')) { alert('Compra Efetuada') }" /></div>
                     </form>
 
 

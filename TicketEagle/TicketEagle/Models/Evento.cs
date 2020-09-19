@@ -18,6 +18,7 @@ namespace TicketEagle.Models
         [Key]
         public int EvId { get; set; }
 
+        [MaxLength(50)]
         public string Titulo { get; set; }
 
         public DateTime Data { get; set; }

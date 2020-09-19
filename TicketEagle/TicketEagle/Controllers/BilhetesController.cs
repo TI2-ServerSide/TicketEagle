@@ -67,7 +67,7 @@ namespace TicketEagle.Controllers
         {
             if (ModelState.IsValid)
             {
-                //encontrar o ID Utilizador do user autenticado
+                //encontrar o ID Utilizador do user autenticado, adicionar data de compra e criar o bilhete
                 bilhete.IDFK = _context.Utilizador.Where(b => b.Nome == User.Identity.Name).Select(b =>b.UserID).FirstOrDefault();
                 bilhete.email = User.Identity.Name;
                 bilhete.DataCompra = DateTime.Now;
